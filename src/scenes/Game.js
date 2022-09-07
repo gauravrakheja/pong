@@ -6,7 +6,7 @@ export default class Game extends Phaser.Scene {
     this.aiPaddleVelocity = new Phaser.Math.Vector2(0, 0)
     this.playerScore = 0
     this.aiScore = 0
-    this.paused = false
+    this.finished = false
   }
 
   preload() {
@@ -37,7 +37,7 @@ export default class Game extends Phaser.Scene {
   }
 
   update() {
-   if(this.paused) {
+   if(this.finished) {
      return
    }
    this._handleKeyBoardInput()
@@ -140,11 +140,11 @@ export default class Game extends Phaser.Scene {
     }
     const maxScore = 1
     if(this.playerScore >= maxScore) {
-      this.paused = true
+      this.finished = true
     } else if(this.aiScore >= maxScore) {
-      this.paused = true
+      this.finished = true
     }
-    if(this.paused) {
+    if(!this.finished) {
       this._resetBall()
     } else {
       this.ball.active = false
