@@ -1,12 +1,5 @@
 import Phaser from 'phaser'
-import WebFontFile from '../WebFontFile'
 import { Colors, Scenes, Fonts, audio } from '.././constants'
-
-const GameState = {
-  Running: 'running',
-  PlayerWon: 'player-won',
-  AiWon: 'ai-won'
-}
 
 export default class Game extends Phaser.Scene {
   init() {
@@ -14,7 +7,6 @@ export default class Game extends Phaser.Scene {
     this.playerScore = 0
     this.aiScore = 0
     this.paused = false
-    this.gameState = GameState.Running
   }
 
   preload() {
@@ -45,7 +37,7 @@ export default class Game extends Phaser.Scene {
   }
 
   update() {
-   if(this.paused || this.gameState !== GameState.Running) {
+   if(this.paused) {
      return
    }
    this._handleKeyBoardInput()
@@ -148,13 +140,11 @@ export default class Game extends Phaser.Scene {
     }
     const maxScore = 1
     if(this.playerScore >= maxScore) {
-      console.log('player Won')
-      this.gameState = GameState.PlayerWon
+      this.paused = true
     } else if(this.aiScore >= maxScore) {
-      console.log('AI Won')
-      this.gameState = GameState.AiWon
+      this.paused = true
     }
-    if(this.gameState === GameState.Running) {
+    if(this.paused) {
       this._resetBall()
     } else {
       this.ball.active = false
